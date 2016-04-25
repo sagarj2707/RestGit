@@ -17,7 +17,7 @@ public class RestFacade {
 	}
 
 	/* JAX Facade Method */
-	public String runJaxFacade(String resourceUri, String resourceType) {
+	public String getJaxFacade(String resourceUri, String resourceType) {
 		resource.setResourceURI(resourceUri);
 		resource.setResourceType(resourceType);
 		return jaxClient.getData();
@@ -27,6 +27,12 @@ public class RestFacade {
 		resource.setResourceURI(resourceUri);
 		resource.setResourceType(resourceType);
 		return jaxClient.postData(message);
+	}
+	
+	public String deleteJaxFacade(String resourceUri, String resourceType) {
+		resource.setResourceURI(resourceUri);
+		resource.setResourceType(resourceType);
+		return jaxClient.deleteData();
 	}
 
 }

@@ -3,6 +3,7 @@ package com.ibm.de.messenger.resources;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -36,6 +37,13 @@ public class MessageResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Message getMessage(@PathParam("messageId") long id) {
 		return messageService.getMessage(id);
+	}
+	
+	@DELETE
+	@Path("/{messageId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Message deleteMessage(@PathParam("messageId") long id){
+		return messageService.removeMessage(id);
 	}
 	
 }

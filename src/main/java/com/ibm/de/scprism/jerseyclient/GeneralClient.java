@@ -8,18 +8,33 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.SecurityContext;
 
 import org.glassfish.jersey.SslConfigurator;
+import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
+import com.ibm.de.messenger.interfaces.ClientInterface;
+import com.ibm.de.messenger.interfaces.HttpMethods;
 import com.ibm.de.messenger.model.Message;
 
+/**
+ * @author sjadhav
+ *
+ */
 public class GeneralClient implements HttpMethods, ClientInterface {
 
+	/* Client Configuration and Registration of Authentication feature */
+	public ClientConfig clientConfig() {
+		ClientConfig clientConfig = new ClientConfig();
+		clientConfig.register(httpAuth());
+		return clientConfig;
+	}
+
+	/*
+	 * Authentication using UserId and Password: Supports Basic and Digest based
+	 * Authentication
+	 */
 	public HttpAuthenticationFeature httpAuth() {
-		// HttpAuthenticationFeature feature =
-		// HttpAuthenticationFeature.universal("username", "password");
 		HttpAuthenticationFeature feature = HttpAuthenticationFeature.universalBuilder()
 				.credentials("username", "password").build();
 		return feature;
@@ -27,8 +42,7 @@ public class GeneralClient implements HttpMethods, ClientInterface {
 
 	/* create a unsecured client */
 	public Client newClient() {
-		Client myGenClient = ClientBuilder.newClient();
-		myGenClient.register(httpAuth());
+		Client myGenClient = ClientBuilder.newClient(clientConfig());
 		return myGenClient;
 	}
 
@@ -64,13 +78,11 @@ public class GeneralClient implements HttpMethods, ClientInterface {
 		String get;
 		Response response = webTarget().request(MediaType.APPLICATION_JSON).get();
 		if (response.getStatus() == Status.OK.getStatusCode()) {
-			get = "post successful";
+			get = "GET successful" + "\nResponse Status : " + response.getStatusInfo() + "\n";
 		} else {
-			get = String.valueOf("POST Failed with status code: " + response.getStatus());
+			get = String.valueOf("GET Failed with status code: " + response.getStatus());
 		}
-		System.out.println(get);
-		// System.out.println("Status code: " + response.getStatus());
-		return response.readEntity(String.class) + response.getHeaders() + response.getStatusInfo();
+		return get + response.readEntity(String.class);
 
 	}
 
@@ -79,41 +91,40 @@ public class GeneralClient implements HttpMethods, ClientInterface {
 		String post;
 		Response response = webTarget().request(MediaType.APPLICATION_JSON)
 				.post(Entity.entity(message, MediaType.APPLICATION_JSON), Response.class);
-		System.out.println(response.getHeaderString("user-agent"));
 		if (response.getStatus() == Status.OK.getStatusCode()) {
-			post = "post successful";
+			post = "POST successful" + "\nResponse Status : " + response.getStatusInfo() + "\nHeader Info :"
+					+ response.getHeaders().toString() + "\n";
 		} else {
 			post = String.valueOf("POST Failed with status code: " + response.getStatus());
 		}
-		return post;
+		return post + response.readEntity(String.class);
 	}
 
 	/* HTTP Method PUT */
 	public String putData() {
-		String post;
+		String put;
 		Response response = webTarget().request(MediaType.APPLICATION_JSON)
 				.put(Entity.json(MediaType.APPLICATION_JSON));
 		System.out.println(response.getHeaderString("COOKIE"));
 		if (response.getStatus() == Status.OK.getStatusCode()) {
-			post = "PUT successful";
+			put = "PUT successful";
 		} else {
-			post = String.valueOf("PUT Failed with status code: " + response.getStatus());
+			put = String.valueOf("PUT Failed with status code: " + response.getStatus());
 		}
-		return post;
+		return put + response.readEntity(String.class);
 	}
 
 	/* HTTP Method DELETE */
 	public String deleteData() {
 		String delete;
-		WebTarget plus = webTarget().path("1");
+		WebTarget plus = webTarget().path("3");
 		Response response = plus.request(MediaType.APPLICATION_JSON).delete();
-		System.out.println(response.getHeaders());
 		if (response.getStatus() == Status.OK.getStatusCode()) {
-			delete = "delete successful";
+			delete = "DELETE successful" + "\nResponse Status : " + response.getStatusInfo() + "\n";
 		} else {
 			delete = String.valueOf("DELETE Failed with status code: " + response.getStatus());
 		}
-		return delete;
+		return delete + response.readEntity(String.class);
 	}
 
 	/* HTTP Method POST */
@@ -123,11 +134,10 @@ public class GeneralClient implements HttpMethods, ClientInterface {
 				.post(Entity.json(MediaType.APPLICATION_JSON), Response.class);
 		System.out.println(response.getHeaderString("user-agent"));
 		if (response.getStatus() == Status.OK.getStatusCode()) {
-			post = "post successful";
+			post = "POST successful";
 		} else {
 			post = String.valueOf("POST Failed with status code: " + response.getStatus());
 		}
 		return post;
 	}
-
 }

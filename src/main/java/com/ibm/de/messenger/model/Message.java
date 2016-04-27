@@ -4,6 +4,10 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * @author sjadhav
+ *
+ */
 @XmlRootElement
 public class Message {
 

@@ -4,16 +4,19 @@ import com.ibm.de.messenger.model.Message;
 import com.ibm.de.scprism.jerseyclient.ClientResources;
 import com.ibm.de.scprism.jerseyclient.GeneralClient;
 
+/**
+ * @author sjadhav
+ *
+ */
 public class RestFacade {
 
 	public static ClientResources resource;
 
-	private GeneralClient jaxClient;
+	private static GeneralClient jaxClient;
 
 	public RestFacade() {
-		RestFacade.resource = new ClientResources();
-
-		this.jaxClient = new GeneralClient();
+		resource = new ClientResources();
+		jaxClient = new GeneralClient();
 	}
 
 	/* JAX Facade Method */
@@ -28,7 +31,7 @@ public class RestFacade {
 		resource.setResourceType(resourceType);
 		return jaxClient.postData(message);
 	}
-	
+
 	public String deleteJaxFacade(String resourceUri, String resourceType) {
 		resource.setResourceURI(resourceUri);
 		resource.setResourceType(resourceType);

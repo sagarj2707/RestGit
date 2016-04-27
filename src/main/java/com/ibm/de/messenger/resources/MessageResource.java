@@ -15,6 +15,10 @@ import com.ibm.de.messenger.model.Message;
 import com.ibm.de.messenger.service.MessageService;
 
 
+/**
+ * @author sjadhav
+ *
+ */
 @Path("/messages")
 public class MessageResource {
 	MessageService messageService = new MessageService();

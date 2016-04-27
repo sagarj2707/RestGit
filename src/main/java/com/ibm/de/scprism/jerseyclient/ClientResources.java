@@ -1,5 +1,9 @@
 package com.ibm.de.scprism.jerseyclient;
 
+/**
+ * @author sjadhav
+ *
+ */
 public class ClientResources {
 
 	/* REST Client Parameters */

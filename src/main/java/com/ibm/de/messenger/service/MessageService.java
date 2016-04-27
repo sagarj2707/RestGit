@@ -7,6 +7,10 @@ import java.util.Map;
 import com.ibm.de.messenger.database.DatabaseClass;
 import com.ibm.de.messenger.model.Message;
 
+/**
+ * @author sjadhav
+ *
+ */
 public class MessageService {
 	private Map<Long, Message> messages = DatabaseClass.getMessages();
 
